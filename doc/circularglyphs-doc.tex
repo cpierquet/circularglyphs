@@ -1,0 +1,265 @@
+% !TeX TXS-program:compile = txs:///arara
+% arara: pdflatex: {shell: yes, synctex: no, interaction: batchmode}
+% arara: pdflatex: {shell: yes, synctex: no, interaction: batchmode} if found('log', '(undefined references|Please rerun|Rerun to get)')
+
+\documentclass[french,11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{DejaVuSerif}
+\usepackage[scale=1.125]{inconsolata}
+\usepackage{circularglyphs}
+\usepackage{soul}
+\usepackage{codehigh}
+\usepackage{multicol}
+\usepackage{fontawesome5}
+\usepackage{fancyvrb}
+\usepackage{fancyhdr}
+\usepackage{tabularray}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\lfoot{\sffamily\small [circularglyphs]}
+\cfoot{\sffamily\small - \thepage{} -}
+\rfoot{\hyperlink{matoc}{\small\faArrowAltCircleUp[regular]}}
+\usepackage{hologo}
+\providecommand\tikzlogo{Ti\textit{k}Z}
+\providecommand\TeXLive{\TeX{}Live\xspace}
+\providecommand\PSTricks{\textsf{PSTricks}\xspace}
+\let\pstricks\PSTricks
+\let\TikZ\tikzlogo
+
+\usepackage{hyperref}
+\urlstyle{same}
+\hypersetup{pdfborder=0 0 0}
+\usepackage[margin=1.5cm]{geometry}
+\setlength{\parindent}{0pt}
+
+\def\TPversion{0.1.0}
+\def\TPdate{4 octobre 2023}
+\usepackage{tcolorbox}
+
+\sethlcolor{lightgray!25}
+\NewDocumentCommand\MontreCode{ m }{%
+	\hl{\vphantom{\texttt{pf}}\texttt{#1}}%
+}
+
+\usepackage{babel}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\thispagestyle{empty}
+
+\begin{center}
+	\begin{minipage}{0.75\linewidth}
+	\begin{tcolorbox}[colframe=yellow,colback=yellow!15]
+		\begin{center}
+			\begin{tabular}{c}
+				{\Huge \texttt{circularglyphs}}\\
+				\\
+				{\LARGE Alphabet Circular Glyphs,} \\
+				\\
+				{\LARGE en \LaTeX, créé avec \TikZ.} \\
+			\end{tabular}
+			
+			\medskip
+			
+			{\small \texttt{Version \TPversion{} -- \TPdate}}
+		\end{center}
+	\end{tcolorbox}
+\end{minipage}
+\end{center}
+
+\vspace*{1mm}
+
+\begin{center}
+	\begin{tabular}{c}
+	\texttt{Cédric Pierquet}\\
+	{\ttfamily c pierquet -- at -- outlook . fr}\\
+	\texttt{\url{https://github.com/cpierquet/circularglyphs}}
+	\\
+	\texttt{\url{https://www.deviantart.com/irolan/art/Circular-Glyphs-479352599}}
+\end{tabular}
+\end{center}
+
+\hrule
+
+\phantomsection
+
+\hypertarget{matoc}{}
+
+\tableofcontents
+
+\vspace*{5mm}
+
+\hrule
+
+\vspace*{5mm}
+
+\vfill
+
+\textbf{Article n°1 de la Déclaration des Droits de l'Homme et du Citoyen de 1789 : }
+
+\medskip
+
+\CircGlyph{Les hommes naissent et demeurent libres et égaux en droits. Les distinctions sociales ne peuvent être fondées que sur l'utilité commune.}
+
+\bigskip
+
+\textbf{Article n°2 de la Déclaration des Droits de l'Homme et du Citoyen de 1789 : }
+
+\medskip
+
+{\LARGE\CircGlyph{Le but de toute association politique est la conservation des droits naturels et imprescriptibles de l'homme. Ces droits sont la liberté, la propriété, la sûreté, et la résistance à l'oppression.}}
+
+\bigskip
+
+\textbf{Article n°3 de la Déclaration des Droits de l'Homme et du Citoyen de 1789 : }
+
+\medskip
+
+\textcolor{purple}{\large\CircGlyph{Le principe de toute souveraineté réside essentiellement dans la nation. Nul corps, nul individu ne peut exercer d'autorité qui n'en émane expressément.}}
+
+\vfill~
+
+\pagebreak
+
+\section{Le package circularglyphs}
+
+\subsection{Idée}
+
+L'idée est de proposer de quoi écrire du texte grâce à l'alphabet \textsf{Circular Glyphs}.
+
+\smallskip
+
+\textsf{Circular Glyphs} est un alphabet graphique de substitution basé sur une construction géométrique à base de cercles et d'arc de cercles sur une grille.
+
+Il a été mis à disposition -- en licence libre -- par \textsf{Irolan}, sur sa page \href{https://www.deviantart.com/irolan/art/Circular-Glyphs-479352599}{devianart}.
+
+\subsection{Caractères disponibles}
+
+Dans l'alphabet \textsf{Circular Glyphs}, on a les règles suivantes :
+
+\begin{itemize}
+	\item les minuscules et majuscules sont identiques ;
+	\item les accents ne sont pas traités ;
+	\item les espaces, tirets et apostrophes sont traités comme un caractère \textsf{Null} ;
+	\item les autres caractères sont ignorés.
+\end{itemize}
+
+\bigskip
+
+\begin{tblr}{width=\linewidth,stretch=1.5,colspec={*{13}{X[m,c]}},row{even}={font=\LARGE\ttfamily},row{odd}={font=\LARGE}}
+	\CircGlyph*{a}&\CircGlyph*{b}&\CircGlyph*{c}&\CircGlyph*{d}&\CircGlyph*{e}&\CircGlyph*{f}&\CircGlyph*{g}&\CircGlyph*{h}&\CircGlyph*{i}&\CircGlyph*{j}&\CircGlyph*{k}&\CircGlyph*{l}&\CircGlyph*{m}\\
+	A&B&C&D&E&F&G&H&I&J&K&L&M\\
+	\CircGlyph*{n}&\CircGlyph*{o}&\CircGlyph*{p}&\CircGlyph*{q}&\CircGlyph*{r}&\CircGlyph*{s}&\CircGlyph*{t}&\CircGlyph*{u}&\CircGlyph*{v}&\CircGlyph*{w}&\CircGlyph*{x}&\CircGlyph*{y}&\CircGlyph*{z}\\
+	N&O&P&Q&R&S&T&U&V&W&X&Y&Z\\
+	\CircGlyph*{0}&\CircGlyph*{1}&\CircGlyph*{2}&\CircGlyph*{3}&\CircGlyph*{4}&\CircGlyph*{5}&\CircGlyph*{6}&\CircGlyph*{7}&\CircGlyph*{8}&\CircGlyph*{9}\\
+	0&1&2&3&4&5&6&7&8&9\\ 
+	\CircGlyph*{ } \\
+	Null \\
+\end{tblr}
+
+\subsection{Chargement}
+
+Le package se charge dans le préambule, via \MontreCode{\textbackslash usepackage\{circularglyphs\}}.
+
+\begin{codehigh}[language=latex/latex3,style/main=teal!15,style/code=teal!15]
+\usepackage{circularglyphs}
+\end{codehigh}
+
+Les seuls packages utilisés sont :
+
+\begin{itemize}
+	\item \MontreCode{tikz} ;
+	\item \MontreCode{xstring} ;
+	\item \MontreCode{calc} ;
+	\item \MontreCode{simplekv}.
+\end{itemize}
+
+\subsection{La police CircularGlyphs.ttf}
+
+À noter, pour les utilisateurs de \hologo{LuaLaTeX} ou \hologo{XeLaTeX} qu'une police de caractères est disponible sur la page citée précédemment (\texttt{CircularGlyphs.ttf}), et que celle-ci sera sans doute plus pertinente que ce package pour des éventuelles transcriptions \textit{conséquentes} !!
+
+\pagebreak
+
+\section{Commande et fonctionnement}
+
+\subsection{Commande basique}
+
+La commande permettant de \textit{transcrire} du texte en \textsf{Circular Glyphs} est tout simplement :
+
+\begin{demohigh}[language=latex/latex3,style/main=teal!15,style/code=teal!15]
+%mode paragraphe
+\CircGlyph{Les hommes naissent et demeurent libres et egaux en droits. Les distinctions sociales ne peuvent etre fondees que sur l'utilite commune.}
+\end{demohigh}
+
+\begin{demohigh}[language=latex/latex3,style/main=teal!15,style/code=teal!15]
+%mode en ligne
+\CircGlyph*{Les hommes naissent et demeurent libres et egaux en droits.}
+\end{demohigh}
+
+La version étoilée (en mode \textit{en ligne}) ne permet pas d'obtenir une grille très \textit{satisfaisante}, alors que la version non étoilée le gère, grâce à \MontreCode{\textbackslash offinterlineskip} et \MontreCode{\textbackslash par}, donc la commande en version étoilée est à réserver pour insérer des caractères \textsf{Circular Glyphs} simples.
+
+\medskip
+
+Concernant la création et disposition des glyphes :
+
+\begin{itemize}
+	\item chaque caractère à une hauteur équivalente (il est un tout petit peu plus haut\ldots) à celle des lettres \MontreCode{ab...yzAB...YZ} dans la police courante ;
+	\item un caractère est \textit{aligné} sur les caractères \MontreCode{ab...yzAB...YZ} dans la police courante ;
+	\item le passage à la ligne est géré par le code, ce qui permet d'avoir une présentation sous forme de \textit{grille}.
+\end{itemize}
+
+\begin{demohigh}[language=latex/latex3,style/main=teal!15,style/code=teal!15]
+%positionnement des glyphes
+q\CircGlyph*{ABCDEFG}A
+\end{demohigh}
+
+\begin{demohigh}[language=latex/latex3,style/main=teal!15,style/code=teal!15]
+%influcence de la police
+{\LARGE\sffamily q\CircGlyph*{ABCDEFG}A}
+\end{demohigh}
+
+\subsection{Caractères alternatifs}
+
+Des caractères alternatifs, accessibles en activant la clé \MontreCode{[Ext]}, permet d'obtenir des glyphes complémentaires (on sort un peu du cadre \textsf{Circular} quand même !).
+
+\bigskip
+
+\begin{tblr}{width=\linewidth,stretch=1.5,colspec={*{13}{X[m,c]}},row{even}={font=\LARGE\ttfamily},row{odd}={font=\LARGE}}
+	\CircGlyph*[Ext]{,}&\CircGlyph*[Ext]{;}&\CircGlyph*[Ext]{.}&\CircGlyph*[Ext]{?}&\CircGlyph*[Ext]{!}&\CircGlyph*[Ext]{:}&\CircGlyph*[Ext]{-}&\CircGlyph*[Ext]{'}&\CircGlyph*[Ext]{+}&\CircGlyph*[Ext]{+}&\CircGlyph*[Ext]{(}&\CircGlyph*[Ext]{)}&\CircGlyph*[Ext]{=}\\
+	,&;&.&?&!&:&-&'&+&*&(&)&= \\
+	\CircGlyph*[Ext]{/}&\CircGlyph*[Ext]{<}&\CircGlyph*[Ext]{>} \\
+	/&<&> \\
+\end{tblr}
+
+\begin{demohigh}[language=latex/latex3,style/main=teal!15,style/code=teal!15]
+%texte avec glyphes etendus
+\CircGlyph*[Ext]{Moi, je...}
+\end{demohigh}
+
+\begin{demohigh}[language=latex/latex3,style/main=teal!15,style/code=teal!15]
+%un peu de Laths ?
+\CircGlyph*[Ext]{2+3+5=10 et 1<9}
+\end{demohigh}
+
+\pagebreak
+
+\subsection{Conseils et compléments}
+
+Pour les caractères spéciaux et/ou accentués, il est conseillé d'utiliser les encodages \MontreCode{T1} et \MontreCode{utf8}, ainsi que le package \MontreCode{babel}.
+
+\smallskip
+
+L'utilisation de \MontreCode{\textbackslash noindent} est recommandée en mode paragraphe pour que la \textit{grille} soit correctement affichée.
+
+Pour de \textit{longs} paragraphes, le temps de compilation peut être relativement long, du fait de l'analyse caractère par caractère\ldots
+
+\section{Historique}
+
+\verb|v0.1.0|~:~~~~Version initiale
+
+\vspace*{1cm}
+
+\end{document}
