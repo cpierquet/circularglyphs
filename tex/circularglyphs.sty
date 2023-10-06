@@ -2,9 +2,10 @@
 % licence    : Released under the LaTeX Project Public License v1.3c or later, see http://www.latex-project.org/lppl.txtf
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{circularglyphs}[2023/10/04 0.1.0 Circular glyphs Alphabet]
+\ProvidesPackage{circularglyphs}[2023/10/06 0.1.1 Circular glyphs Alphabet]
 
 %====HISTORIQUE
+% v 0.1.1	Compatibilité accrue avec le moteur pdflatex ^^ + clé [Color]
 % v 0.1.0	Version initiale
 
 %====BASE
@@ -21,8 +22,13 @@
 \def\tmp@circglyph@nivpt{0.25}
 
 %====CLÉS
+\defKV[circularglyph]{%
+	Color=\def\circularglyphcolor{#1}
+}
 \setKVdefault[circularglyph]{%
-	Ext=false
+	Ext=false,%
+	Inline=false,%
+	Color=black
 }
 
 %====STYLES
@@ -191,16 +197,36 @@
 }
 
 %====MACROCRÉATION
-\NewDocumentCommand\GenereCircGlyp{ m m }{%1=lettre,2=pictikz
-	\IfStrEq{\TmpCaract}{#1}%
+%\ifpdftex
+%gestion des caractères actifs
+\NewDocumentCommand\GenereCircGlyp{ }{%
+	\begingroup
+	\catcode`\;=12
+	\catcode`\:=12
+	\catcode`\!=12
+	\catcode`\?=12
+	\GenereCircGlypAux
+}
+\NewDocumentCommand\GenereCircGlypAux{ m m }{%1=lettre,2=pictikz
+	\endgroup
+	\IfEq{\TmpCaract}{#1}%
 		{%
 			\raisebox{-\tmp@circglyph@profondeur}{%
-				\begin{tikzpicture}[CircGlyph]\clip (-0.5,-0.5) rectangle (0.5,0.5) ; \pic at (0,0) {#2} ;\end{tikzpicture}%
+				\begin{tikzpicture}[CircGlyph,\circularglyphcolor]\clip (-0.5,-0.5) rectangle (0.5,0.5) ; \pic at (0,0) {#2} ;\end{tikzpicture}%
 			}%
 		}{}%
 }
 
-\NewDocumentCommand\CircGlyphChar{ m }{%1=lettre avec taille gérée par une macro supérieure
+\NewDocumentCommand\CircGlyphChar{ }{%
+	\begingroup
+	\catcode`\;=12
+	\catcode`\:=12
+	\catcode`\!=12
+	\catcode`\?=12
+	\CircGlyphCharAux
+}
+\NewDocumentCommand\CircGlyphCharAux{ m }{%1=lettre avec taille gérée par une macro supérieure
+	\endgroup
 	%les caractères min/MAJ
 	\GenereCircGlyp{a}{CircGlyphA}%
 	\GenereCircGlyp{b}{CircGlyphB}%
@@ -265,8 +291,8 @@
 	\GenereCircGlyp{7}{CircGlyphSept}%
 	\GenereCircGlyp{8}{CircGlyphHuit}%
 	\GenereCircGlyp{9}{CircGlyphNeuf}%
-	%la ponctuation en fonction de [Ext]
 	\GenereCircGlyp{ }{CircGlyphNull}%
+	%la ponctuation en fonction de [Ext]
 	\ifboolKV[circularglyph]{Ext}%
 		{%
 			\GenereCircGlyp{,}{CircGlyphVirg}%
@@ -292,15 +318,20 @@
 		}%
 }
 
-\NewDocumentCommand\CircGlyph{ s O{} m }{%
+\NewDocumentCommand\CircGlyph{ }{%
+	\begingroup
+	\catcode`\;=12
+	\catcode`\:=12
+	\catcode`\!=12
+	\catcode`\?=12
+	\CircGlyphAux
+}
+\NewDocumentCommand\CircGlyphAux{ O{} m }{%
+	\endgroup
 	\useKVdefault[circularglyph]%
-	\setKV[circularglyph]{#2}%
+	\setKV[circularglyph]{#1}%
 	%gestion des caractères spéciaux
-	\catcode`\;=12%
-	\catcode`\?=12%
-	\catcode`\!=12%
-	\catcode`\:=12%
-	\xdef\tmpphrase{#3}%
+	\def\tmpphrase{#2}%
 	\StrSubstitute{\tmpphrase}{À}{A}[\tmpphrase]%
 	\StrSubstitute{\tmpphrase}{à}{a}[\tmpphrase]%
 	\StrSubstitute{\tmpphrase}{Â}{A}[\tmpphrase]%
@@ -339,7 +370,17 @@
 	\settototalheight{\tmp@circglyph@hauteur@totale}{\hbox{azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN}}%
 	\settodepth{\tmp@circglyph@profondeur}{\hbox{azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN}}%
 	%créationdesglyphes
-	{\IfBooleanF{#1}{\offinterlineskip}\StrLen{\tmpphrase}[\NbCaract]{\foreach \poslet in {1,...,\NbCaract}{{\StrChar{\tmpphrase}{\poslet}[\TmpCaract]\CircGlyphChar{\TmpCaract}}\hspace{0pt}}}\IfBooleanF{#1}{\par}}%
+	\StrLen{\tmpphrase}[\NbCaract]%
+	\ifboolKV[circularglyph]{Inline}%
+		{%
+			{\foreach \poslet in {1,...,\NbCaract}{{\StrChar{\tmpphrase}{\poslet}[\TmpCaract]\CircGlyphChar{\TmpCaract}}\hspace{0pt}}}%
+		}%
+		{%
+			{%
+				\offinterlineskip{\foreach \poslet in {1,...,\NbCaract}{{\StrChar{\tmpphrase}{\poslet}[\TmpCaract]\CircGlyphChar{\TmpCaract}}\hspace{0pt}}}\par%
+			}%
+		}%
+	%{\IfBooleanF{#1}{\offinterlineskip}\StrLen{\tmpphrase}[\NbCaract]{\foreach \poslet in {1,...,\NbCaract}{{\StrChar{\tmpphrase}{\poslet}[\TmpCaract]\CircGlyphChar{\TmpCaract}}\hspace{0pt}}}\IfBooleanF{#1}{\par}}%
 }
 
 \endinput
